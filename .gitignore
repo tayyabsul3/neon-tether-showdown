@@ -1,0 +1,5 @@
+.agent/
+.gemini/
+.git/
+node_modules/
+.vercel/

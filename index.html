@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Tether Showdown</title>
+    <!-- Tailwind CSS for sleek alignment -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for retro/modern style -->
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Russo+One&display=swap" rel="stylesheet">
+    <!-- FontAwesome for minimalistic control icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Separate stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-gray-100 flex flex-col items-center justify-center min-h-screen p-2 crt-effect">
+
+<div class="relative w-full max-w-md flex flex-col items-center select-none">
+    
+    <!-- Title at the very top -->
+    <h1 class="text-3xl title-font text-white drop-shadow-[0_0_12px_rgba(124,58,237,0.5)] tracking-wide mb-4 select-none text-center">First to 100 Wins</h1>
+    
+    <!-- Minimalist Top HUD Row (Mimicking the reference video) -->
+    <div class="w-full flex justify-between items-end mb-4 px-2 select-none z-10">
+        <!-- Left: Clean vertical list of scores -->
+        <div class="flex flex-col gap-1 text-2xl font-black select-none tracking-tight leading-none title-font">
+            <div id="score-yellow" class="neon-yellow transition-all duration-300">1/100</div>
+            <div id="score-blue" class="neon-blue transition-all duration-300">1/100</div>
+            <div id="score-green" class="neon-green transition-all duration-300">1/100</div>
+            <div id="score-red" class="neon-red transition-all duration-300">1/100</div>
+        </div>
+
+        <!-- Right: Speed & Next Boost -->
+        <div class="text-right flex flex-col items-end">
+            <div class="flex items-center gap-2">
+                <span id="speedDisplay" class="font-extrabold text-xl text-cyan-400 title-font text-shadow: 0 0 8px rgba(34,211,238,0.5)">Speed: 1.00x</span>
+                <button id="btnSound" class="text-cyan-400 hover:text-cyan-300 transition-colors duration-150 p-1" title="Toggle Sound">
+                    <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+            
+            <div class="w-32 bg-gray-950 h-3 rounded-sm mt-2 overflow-hidden border border-gray-800">
+                <div id="boostProgressBar" class="bg-cyan-400 h-full w-0 transition-all duration-100"></div>
+            </div>
+            <span class="text-[10px] italic text-gray-500 mt-1 select-none">Next Boost</span>
+        </div>
+    </div>
+
+    <!-- Main Game Canvas Frame -->
+    <div class="relative w-full aspect-square bg-transparent overflow-hidden flex items-center justify-center">
+        <canvas id="gameCanvas" class="w-full h-full bg-transparent"></canvas>
+        
+        <!-- Action Overlay text ("SPEED UP!", "RIP") -->
+        <div id="flashOverlay" class="absolute inset-0 flex items-center justify-center pointer-events-none z-20 transition-all duration-300 opacity-0 scale-75">
+            <span id="flashText" class="title-font text-3xl font-black text-center text-yellow-400 drop-shadow-[0_4px_10px_rgba(234,179,8,0.6)]">
+                SPEED UP!
+            </span>
+        </div>
+    </div>
+
+    <!-- Start Screen Overlay (Premium Glass Console) -->
+    <div id="startOverlay" class="absolute inset-0 glass-panel glow-purple z-30 flex flex-col items-center justify-center p-6 rounded-3xl transition-all duration-300">
+        <h2 class="text-3xl title-font text-white mb-1 tracking-wide text-center drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">Tether Showdown</h2>
+        <p class="text-xs text-indigo-400 mb-6 uppercase tracking-widest text-center font-bold">Select Your Champion</p>
+        
+        <!-- Champion Selector Grid -->
+        <div class="grid grid-cols-2 gap-4 w-full max-w-xs mb-8">
+            <button id="select-yellow" class="btn-select flex flex-col items-center gap-2 p-3 bg-gray-950/60 border border-gray-800/80 rounded-2xl transition-all duration-150 group">
+                <svg class="w-14 h-14 filter drop-shadow-[0_0_8px_rgba(234,179,8,0.4)] transition-transform duration-200 group-hover:scale-110" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#eab308" />
+                    <circle cx="35" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="35" cy="40" r="4.5" fill="#000000" />
+                    <circle cx="65" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="65" cy="40" r="4.5" fill="#000000" />
+                    <path d="M32 62 Q50 78 68 62" stroke="#000000" stroke-width="5" fill="none" stroke-linecap="round" />
+                </svg>
+                <span class="text-xs font-bold text-yellow-500 tracking-wider">YELLOW</span>
+            </button>
+            <button id="select-blue" class="btn-select flex flex-col items-center gap-2 p-3 bg-gray-950/60 border border-gray-800/80 rounded-2xl transition-all duration-150 group">
+                <svg class="w-14 h-14 filter drop-shadow-[0_0_8px_rgba(59,130,246,0.4)] transition-transform duration-200 group-hover:scale-110" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#3b82f6" />
+                    <circle cx="35" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="35" cy="40" r="4.5" fill="#000000" />
+                    <circle cx="65" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="65" cy="40" r="4.5" fill="#000000" />
+                    <path d="M32 62 Q50 78 68 62" stroke="#000000" stroke-width="5" fill="none" stroke-linecap="round" />
+                </svg>
+                <span class="text-xs font-bold text-blue-500 tracking-wider">BLUE</span>
+            </button>
+            <button id="select-green" class="btn-select flex flex-col items-center gap-2 p-3 bg-gray-950/60 border border-gray-800/80 rounded-2xl transition-all duration-150 group">
+                <svg class="w-14 h-14 filter drop-shadow-[0_0_8px_rgba(34,197,94,0.4)] transition-transform duration-200 group-hover:scale-110" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#22c55e" />
+                    <circle cx="35" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="35" cy="40" r="4.5" fill="#000000" />
+                    <circle cx="65" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="65" cy="40" r="4.5" fill="#000000" />
+                    <path d="M32 62 Q50 78 68 62" stroke="#000000" stroke-width="5" fill="none" stroke-linecap="round" />
+                </svg>
+                <span class="text-xs font-bold text-green-500 tracking-wider">GREEN</span>
+            </button>
+            <button id="select-red" class="btn-select flex flex-col items-center gap-2 p-3 bg-gray-950/60 border border-gray-800/80 rounded-2xl transition-all duration-150 group">
+                <svg class="w-14 h-14 filter drop-shadow-[0_0_8px_rgba(239,68,68,0.4)] transition-transform duration-200 group-hover:scale-110" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#ef4444" />
+                    <circle cx="35" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="35" cy="40" r="4.5" fill="#000000" />
+                    <circle cx="65" cy="40" r="9" fill="#ffffff" />
+                    <circle cx="65" cy="40" r="4.5" fill="#000000" />
+                    <path d="M32 62 Q50 78 68 62" stroke="#000000" stroke-width="5" fill="none" stroke-linecap="round" />
+                </svg>
+                <span class="text-xs font-bold text-red-500 tracking-wider">RED</span>
+            </button>
+        </div>
+
+        <button id="btnStartGame" class="btn-start-cyber w-full max-w-xs py-3 rounded-2xl text-white font-black text-sm uppercase tracking-widest transition-all duration-200" disabled>
+            Start Battle
+        </button>
+    </div>
+
+    <!-- Winner Modal Overlay (Premium Glass Console) -->
+    <div id="winnerOverlay" class="absolute inset-0 glass-panel glow-purple z-30 flex flex-col items-center justify-center p-6 rounded-3xl opacity-0 pointer-events-none transition-all duration-300">
+        <h2 class="text-3xl title-font text-white mb-2 tracking-wide text-center drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">BATTLE DECIDED!</h2>
+        
+        <!-- Champion Avatar Display -->
+        <div id="winnerAvatarContainer" class="my-6 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-transform duration-300 scale-100">
+            <!-- Dynamic SVG content -->
+        </div>
+        
+        <p id="winnerMessage" class="text-xl font-bold text-center mb-8 uppercase tracking-widest text-indigo-400">CHAMPION WINS!</p>
+        
+        <button id="btnPlayAgain" class="btn-start-cyber w-full max-w-xs py-3 rounded-2xl text-white font-black text-sm uppercase tracking-widest transition-all duration-200">
+            Play Again
+        </button>
+    </div>
+
+</div>
+
+<!-- Separate javascript file -->
+<script defer src="game.js"></script>
+</body>
+</html>
