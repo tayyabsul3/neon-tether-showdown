@@ -261,8 +261,9 @@ function resetTargetVelocities() {
     });
 }
 
-function updatePhysics() {
+function updatePhysics(dt) {
     if (!isPlaying || isGameOver) return;
+    if (typeof dt === 'undefined') dt = 1.0;
 
     // Revert player expression to happy face if reaction timer has expired
     const nowTime = Date.now();
@@ -297,13 +298,13 @@ function updatePhysics() {
         let diff = p.targetPaddleAngle - p.paddleAngle;
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
-        p.paddleAngle += diff * 0.18;
+        p.paddleAngle += diff * 0.18 * dt;
     });
 
     // Handle character movement
     activePlayers.forEach(p => {
-        p.pos.x += p.vel.x;
-        p.pos.y += p.vel.y;
+        p.pos.x += p.vel.x * dt;
+        p.pos.y += p.vel.y * dt;
 
         const dx = p.pos.x - centerX;
         const dy = p.pos.y - centerY;
@@ -721,10 +722,16 @@ function drawScene() {
 let lastFrameTime = 0;
 function gameLoop(timestamp) {
     if (!lastFrameTime) lastFrameTime = timestamp;
+    let elapsedMs = timestamp - lastFrameTime;
+    lastFrameTime = timestamp;
+
+    // Cap elapsed time to avoid huge teleportation jumps when tab is inactive
+    if (elapsedMs > 100) elapsedMs = 16.666;
+    const dt = elapsedMs / 16.666; // 1.0 at 60fps
     
-    updatePhysics();
+    updatePhysics(dt);
     drawScene();
-    updateAndDrawConfetti(); // Draw victory particles if game over
+    updateAndDrawConfetti(dt); // Draw victory particles if game over
 
     if (isPlaying && !isGameOver) {
         const now = Date.now();
@@ -1144,13 +1151,14 @@ function initConfetti() {
     }
 }
 
-function updateAndDrawConfetti() {
+function updateAndDrawConfetti(dt) {
     if (!isGameOver) return;
+    if (typeof dt === 'undefined') dt = 1.0;
     ctx.save();
     confettiParticles.forEach(c => {
-        c.x += c.vx;
-        c.y += c.vy;
-        c.rotation += c.rotationSpeed;
+        c.x += c.vx * dt;
+        c.y += c.vy * dt;
+        c.rotation += c.rotationSpeed * dt;
         
         // Wrap back to top if falls off
         if (c.y > canvas.height) {
