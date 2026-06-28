@@ -1,7 +1,7 @@
 {
-  "name": "Neon Tether Showdown",
-  "short_name": "TetherShowdown",
-  "description": "Premium multiplayer neon bouncer battle arena with point stealing tethers.",
+  "name": "Bouncer Battle",
+  "short_name": "BouncerBattle",
+  "description": "Premium multiplayer neon bouncer battle arena.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

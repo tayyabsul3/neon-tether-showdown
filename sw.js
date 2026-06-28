@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tether-showdown-v1';
+const CACHE_NAME = 'bouncer-battle-v1';
 const ASSETS = [
     './',
     './index.html',

@@ -1,6 +1,6 @@
-# 🌌 Neon Tether Showdown
+# 🌌 Bouncer Battle
 
-![Neon Tether Showdown Logo](logo.png)
+![Bouncer Battle Logo](logo.png)
 
 A premium, fast-paced, retro-futuristic arcade battle game built with vanilla HTML5, Canvas, and CSS. Players compete in a neon-drenched circular arena, scoring bounces off their paddles, clashing with opponent tethers to steal points, and dodging elimination as their tethers snap and scale dynamically.
 
@@ -22,7 +22,7 @@ A premium, fast-paced, retro-futuristic arcade battle game built with vanilla HT
 *   **Fonts:** Styled with bold typography utilizing Google Fonts' *Russo One* (game header font) and *Chakra Petch* (monospaced cyber body text).
 
 ### 2. Progressive Web App (PWA)
-*   **Installed App:** Configure web settings to install **Neon Tether Showdown** as a standalone app directly to your Android or iOS homescreen.
+*   **Installed App:** Configure web settings to install **Bouncer Battle** as a standalone app directly to your Android or iOS homescreen.
 *   **Offline Capabilities:** Service workers intercept and cache static scripts, stylesheets, fonts, and inline SVG assets, allowing the game to load instantly and run fully offline.
 *   **Vector Icon/Favicon:** Includes a sharp vector `icon.svg` as the web browser favicon and installed app launcher icon.
 
