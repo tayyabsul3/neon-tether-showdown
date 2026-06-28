@@ -1,0 +1,18 @@
+{
+  "name": "Neon Tether Showdown",
+  "short_name": "TetherShowdown",
+  "description": "Premium multiplayer neon bouncer battle arena with point stealing tethers.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0b1e",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

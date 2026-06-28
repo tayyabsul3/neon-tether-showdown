@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Separate stylesheet -->
     <link rel="stylesheet" href="style.css">
+    <!-- PWA Favicon -->
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Theme color for mobile browser tab styling -->
+    <meta name="theme-color" content="#7c3aed">
 </head>
 <body class="text-gray-100 flex flex-col items-center justify-center min-h-screen p-2 crt-effect">
 
@@ -136,5 +142,15 @@
 
 <!-- Separate javascript file -->
 <script defer src="game.js"></script>
+<!-- Register PWA Service Worker -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker registered successfully!', reg))
+                .catch(err => console.error('Service Worker registration failed:', err));
+        });
+    }
+</script>
 </body>
 </html>
